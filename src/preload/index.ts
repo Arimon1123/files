@@ -1,8 +1,14 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { FileEntity } from '../main/entities/file.entity'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  getData: async (): Promise<File[]> => await ipcRenderer.invoke('getData'),
+  saveData: (file: FileEntity): Promise<any> => {
+    return ipcRenderer.invoke('saveData', file)
+  }
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

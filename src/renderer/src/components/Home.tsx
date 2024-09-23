@@ -3,12 +3,12 @@ import { type File } from '@renderer/types/types'
 
 export function Home() {
   const [files, setFiles] = useState<File[]>([])
-  useEffect(() => {
-    const fetchFiles = async () => {
-      setFiles(await window.api.getData())
-    }
-    fetchFiles()
-  })
+  // useEffect(() => {
+  //   const fetchFiles = async () => {
+  //     const re
+  //   }
+  //   fetchFiles()
+  // })
 
   return (
     <ul>

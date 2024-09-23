@@ -108,4 +108,5 @@ li {
   width: 75vw;
   height: 100vh;
   padding: 10px 20px;
+  overflow-y: scroll;  
 }

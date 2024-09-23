@@ -1,12 +1,12 @@
 export type File = {
-  id?: number
-  number?: string
-  description?: string
-  area?: string
-  institution?: string
-  medium?: string
-  volume?: string
-  year?: number
+  id: number
+  fileNumber: string
+  description: string
+  area: string
+  institution: string
+  medium: string
+  volume: string
+  year: number
 }
 
 export type Person = {
@@ -23,4 +23,11 @@ export type Loan = {
   files?: File[]
   loaner?: Person
   borrower?: Person
+}
+
+export interface Result<T> {
+  message: string
+  result: 'success' | 'error'
+  error?: Error
+  data?: T
 }

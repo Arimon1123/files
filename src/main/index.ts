@@ -3,13 +3,15 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-import { dataSource, findFiles, saveFile } from './typeorm'
+import { dataSource, filterFiles, filterLoans, filterPersons, findFiles, findLoans, findPersons, saveFile, saveLoan, savePerson, searchFilesByNumber, searchLoansByNumber, searchPersonsByName, updateFile, updateLoan, updatePerson } from './typeorm'
 import { FileEntity } from './entities/file.entity'
+import { PersonEntity } from './entities/person.entity'
+import { LoanEntity } from './entities/loan.entity'
 
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
+    width: 1020,
     height: 670,
     show: false,
     autoHideMenuBar: true,
@@ -50,9 +52,62 @@ app.whenReady().then(() => {
     return await findFiles()
   })
 
-  ipcMain.handle('saveData', async (_event, file: FileEntity) => {
+  ipcMain.handle('saveFile', async (_event, file: FileEntity) => {
     return await saveFile(file)
   })
+
+  ipcMain.handle('filterByName',async (_event, number: string) => {
+    return await searchFilesByNumber(number)
+  })
+
+  ipcMain.handle('filterFiles', async (_event, filter: string) => {
+    return await filterFiles(filter)
+  })
+
+  ipcMain.handle('updateFile', async (_event, file:FileEntity) => {
+    return await updateFile(file)
+  })
+
+  ipcMain.handle('savePerson', async (_event, person:PersonEntity) => {
+    return await savePerson(person)
+  })
+
+  ipcMain.handle('findPersons', async () => {
+    return await findPersons()
+  })
+
+  ipcMain.handle('filterPerson', async (_event, filter: string) => {
+    return await filterPersons(filter)
+  })
+
+  ipcMain.handle('searchPerson', async (_event, name: string) => {
+    return await searchPersonsByName(name)
+  })
+
+  ipcMain.handle('updatePerson', async (_event, person: PersonEntity) => {
+    return await updatePerson(person)
+  })
+
+  ipcMain.handle('findLoans', async () => {
+    return await findLoans()
+  })
+
+  ipcMain.handle('saveLoan', async (_event, loan: LoanEntity) => {
+    return await saveLoan(loan)
+  })
+
+  ipcMain.handle('filterLoans', async (_event, filter: string) => {
+    return await filterLoans(filter)
+  })
+
+  ipcMain.handle('searchLoan', async (_event, number: number) => {
+    return await searchLoansByNumber(number)
+  })
+
+  ipcMain.handle('updateLoan', async (_event, loan: LoanEntity) => {
+    return await updateLoan(loan)
+  })
+
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })

@@ -70,7 +70,7 @@ body {
 }
 
 .side-bar {
-  width: 24vw;
+  width: 15vw;
   height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
@@ -105,7 +105,7 @@ li {
 }
 
 .main-content {
-  width: 75vw;
+  width: 84vw;
   height: 100vh;
   padding: 10px 20px;
   overflow-y: scroll;  

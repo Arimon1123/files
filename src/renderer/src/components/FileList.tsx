@@ -1,5 +1,5 @@
 import {
-  Box,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -9,9 +9,11 @@ import {
   TableRow
 } from '@mui/material'
 import { File } from '@renderer/types/types'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 interface FileTableProps {
   files: File[]
+  onDeleteHandler: (file: File) => void
 }
 
 export function FileTable(props: FileTableProps) {
@@ -44,8 +46,13 @@ export function FileTable(props: FileTableProps) {
                 <TableCell>{file.volume}</TableCell>
                 <TableCell>{file.year}</TableCell>
                 <TableCell>
-                  <button>Editar</button>
-                  <button>Eliminar</button>
+                  <IconButton
+                    onClick={() => {
+                      props.onDeleteHandler(file)
+                    }}
+                  >
+                    <DeleteIcon sx={{ color: 'red' }}></DeleteIcon>
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

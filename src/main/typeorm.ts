@@ -93,8 +93,14 @@ const personRepository = dataSource.getRepository(PersonEntity)
 
 export const savePerson = async (person: PersonEntity) => {
   try {
-    await personRepository.save(person)
-    return { result: 'success', message: 'person saved' } as Result<string>
+    const savedPerson = await personRepository.findOne({ where: { name: person.name } })
+    if (savedPerson) {
+      person.id = savedPerson.id
+      return updatePerson(person)
+    } else {
+      const newPerson = await personRepository.save(person)
+      return { result: 'success', message: 'person saved', data: newPerson } as Result<PersonEntity>
+    }
   } catch (e) {
     console.error(e)
     return { result: 'error', message: `${(e as Error).message}` } as Result<string>
@@ -147,7 +153,11 @@ export const updatePerson = async (person: PersonEntity) => {
   const { id, ...data } = person
   try {
     await personRepository.update(id, data)
-    return { result: 'success', message: 'person updated' } as Result<string>
+    return {
+      result: 'success',
+      message: 'person updated',
+      data: person
+    } as Result<PersonEntity>
   } catch (e) {
     console.error(e)
     return { result: 'error', message: `${(e as Error).message}` } as Result<string>
@@ -160,7 +170,16 @@ const loanRepository = dataSource.getRepository(LoanEntity)
 
 export const saveLoan = async (loan: LoanEntity) => {
   try {
-    await loanRepository.save(loan)
+    const newLoan = new LoanEntity()
+    newLoan.borrower =
+      (await personRepository.findOne({ where: { id: loan.borrower.id } })) ?? ({} as PersonEntity)
+    newLoan.loaner =
+      (await personRepository.findOne({ where: { id: loan.loaner.id } })) ?? ({} as PersonEntity)
+    newLoan.files = loan.files
+    newLoan.number = loan.number
+    newLoan.date = new Date()
+    console.table(newLoan)
+    await loanRepository.save(newLoan)
     return { result: 'success', message: 'loan saved' } as Result<string>
   } catch (e) {
     console.error(e)
@@ -172,7 +191,7 @@ export const findLoans = async () => {
   try {
     return {
       result: 'success',
-      data: await loanRepository.find(),
+      data: await loanRepository.find({ relations: ['loaner', 'files', 'borrower'] }),
       message: 'loans retrieved'
     } as Result<LoanEntity[]>
   } catch (e) {

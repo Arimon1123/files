@@ -1,4 +1,12 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { FileEntity } from './file.entity'
 import { PersonEntity } from './person.entity'
 
@@ -10,7 +18,8 @@ export class LoanEntity {
   date: Date
   @Column()
   number: number
-  @OneToMany(() => FileEntity, (file) => file.id)
+  @ManyToMany(() => FileEntity)
+  @JoinTable()
   files: FileEntity[]
   @OneToOne(() => PersonEntity)
   @JoinColumn()

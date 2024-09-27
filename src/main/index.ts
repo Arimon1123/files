@@ -44,11 +44,14 @@ function createWindow(): void {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
+
+  
   // Set app user model id for windows
   dataSource.initialize()
   electronApp.setAppUserModelId('com.electron')
-
-  ipcMain.handle('findFiles', async () => {
+  
+ 
+  ipcMain.handle('findFiles',async () => {
     return await findFiles()
   })
 

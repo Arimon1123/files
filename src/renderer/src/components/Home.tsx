@@ -2,19 +2,17 @@ import { useEffect, useState } from 'react'
 import { type File } from '@renderer/types/types'
 
 export function Home() {
-  const [files, setFiles] = useState<File[]>([])
-  // useEffect(() => {
-  //   const fetchFiles = async () => {
-  //     const re
-  //   }
-  //   fetchFiles()
-  // })
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const result = await window.api.findLoans()
+      console.log(result.data)
+    }
+    fetchFiles()
+  })
 
   return (
     <ul>
-      {files.map((file: File) => (
-        <li key={file.id}>{file.number}</li>
-      ))}
+      <li> a </li>
     </ul>
   )
 }

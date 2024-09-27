@@ -4,7 +4,7 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { FileEntity } from './file.entity'
@@ -21,10 +21,10 @@ export class LoanEntity {
   @ManyToMany(() => FileEntity)
   @JoinTable()
   files: FileEntity[]
-  @OneToOne(() => PersonEntity)
+  @ManyToOne(() => PersonEntity)
   @JoinColumn()
   loaner: PersonEntity
-  @OneToOne(() => PersonEntity)
+  @ManyToOne(() => PersonEntity)
   @JoinColumn()
   borrower: PersonEntity
 }

@@ -499,7 +499,7 @@
     </routine>
     <schema id="191" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-09-20.20:55:39</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-09-27.02:55:32</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="192" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1592,163 +1592,206 @@
     </argument>
     <table id="555" parent="191" name="files"/>
     <table id="556" parent="191" name="loans"/>
-    <table id="557" parent="191" name="persons"/>
-    <table id="558" parent="191" name="sqlite_master">
+    <table id="557" parent="191" name="loans_files_files"/>
+    <table id="558" parent="191" name="persons"/>
+    <table id="559" parent="191" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="559" parent="191" name="sqlite_sequence">
+    <table id="560" parent="191" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <column id="560" parent="555" name="id">
+    <column id="561" parent="555" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="561" parent="555" name="number">
+    <column id="562" parent="555" name="fileNumber">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="562" parent="555" name="description">
+    <column id="563" parent="555" name="description">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="563" parent="555" name="area">
+    <column id="564" parent="555" name="area">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="564" parent="555" name="institution">
+    <column id="565" parent="555" name="institution">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="565" parent="555" name="medium">
+    <column id="566" parent="555" name="medium">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="566" parent="555" name="volume">
+    <column id="567" parent="555" name="volume">
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="567" parent="555" name="year">
+    <column id="568" parent="555" name="year">
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <key id="568" parent="555">
+    <key id="569" parent="555">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="569" parent="556" name="id">
+    <column id="570" parent="556" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="570" parent="556" name="date">
+    <column id="571" parent="556" name="date">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>datetime|0s</StoredType>
     </column>
-    <column id="571" parent="556" name="number">
+    <column id="572" parent="556" name="number">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="572" parent="556" name="loanerId">
+    <column id="573" parent="556" name="loanerId">
       <Position>4</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="573" parent="556" name="borrowerId">
+    <column id="574" parent="556" name="borrowerId">
       <Position>5</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <foreign-key id="574" parent="556" name="FK_632eb24f63b5452ffadd6fb72a8">
+    <foreign-key id="575" parent="556" name="FK_632eb24f63b5452ffadd6fb72a8">
       <ColNames>loanerId</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>persons</RefTableName>
     </foreign-key>
-    <foreign-key id="575" parent="556" name="FK_7c6bf066c6627d4d6f5bfda6290">
+    <foreign-key id="576" parent="556" name="FK_7c6bf066c6627d4d6f5bfda6290">
       <ColNames>borrowerId</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>persons</RefTableName>
     </foreign-key>
-    <index id="576" parent="556" name="sqlite_autoindex_loans_1">
+    <index id="577" parent="556" name="sqlite_autoindex_loans_1">
       <ColNames>loanerId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="577" parent="556" name="sqlite_autoindex_loans_2">
+    <index id="578" parent="556" name="sqlite_autoindex_loans_2">
       <ColNames>borrowerId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="578" parent="556">
+    <key id="579" parent="556">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="579" parent="556" name="REL_632eb24f63b5452ffadd6fb72a">
+    <key id="580" parent="556" name="REL_632eb24f63b5452ffadd6fb72a">
       <ColNames>loanerId</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_loans_1</UnderlyingIndexName>
     </key>
-    <key id="580" parent="556" name="REL_7c6bf066c6627d4d6f5bfda629">
+    <key id="581" parent="556" name="REL_7c6bf066c6627d4d6f5bfda629">
       <ColNames>borrowerId</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_loans_2</UnderlyingIndexName>
     </key>
-    <column id="581" parent="557" name="id">
+    <column id="582" parent="557" name="loansId">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>integer|0s</StoredType>
+    </column>
+    <column id="583" parent="557" name="filesId">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>integer|0s</StoredType>
+    </column>
+    <foreign-key id="584" parent="557" name="FK_d26e8b7f03bb3d4dd5fc6b5ee35">
+      <ColNames>loansId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefTableName>loans</RefTableName>
+    </foreign-key>
+    <foreign-key id="585" parent="557" name="FK_3bc3a3287d05c6dff7d13175510">
+      <ColNames>filesId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>id</RefColNames>
+      <RefTableName>files</RefTableName>
+    </foreign-key>
+    <index id="586" parent="557" name="sqlite_autoindex_loans_files_files_1">
+      <ColNames>loansId
+filesId</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="587" parent="557" name="IDX_d26e8b7f03bb3d4dd5fc6b5ee3">
+      <ColNames>loansId</ColNames>
+    </index>
+    <index id="588" parent="557" name="IDX_3bc3a3287d05c6dff7d1317551">
+      <ColNames>filesId</ColNames>
+    </index>
+    <key id="589" parent="557">
+      <ColNames>loansId
+filesId</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_loans_files_files_1</UnderlyingIndexName>
+    </key>
+    <column id="590" parent="558" name="id">
       <AutoIncrement>1</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>integer|0s</StoredType>
     </column>
-    <column id="582" parent="557" name="name">
+    <column id="591" parent="558" name="name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="583" parent="557" name="position">
+    <column id="592" parent="558" name="position">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <column id="584" parent="557" name="area">
+    <column id="593" parent="558" name="area">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>varchar|0s</StoredType>
     </column>
-    <key id="585" parent="557">
+    <key id="594" parent="558">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="586" parent="558" name="type">
+    <column id="595" parent="559" name="type">
       <Position>1</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="587" parent="558" name="name">
+    <column id="596" parent="559" name="name">
       <Position>2</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="588" parent="558" name="tbl_name">
+    <column id="597" parent="559" name="tbl_name">
       <Position>3</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="589" parent="558" name="rootpage">
+    <column id="598" parent="559" name="rootpage">
       <Position>4</Position>
       <StoredType>INT|0s</StoredType>
     </column>
-    <column id="590" parent="558" name="sql">
+    <column id="599" parent="559" name="sql">
       <Position>5</Position>
       <StoredType>TEXT|0s</StoredType>
     </column>
-    <column id="591" parent="559" name="name">
+    <column id="600" parent="560" name="name">
       <Position>1</Position>
     </column>
-    <column id="592" parent="559" name="seq">
+    <column id="601" parent="560" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

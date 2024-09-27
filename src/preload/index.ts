@@ -45,6 +45,9 @@ const api = {
   },
   updateLoan: async (loan: LoanEntity): Promise<Result<string>> => {
     return ipcRenderer.invoke('updateLoan', loan)
+  },
+  generateDoc: async (loan: LoanEntity): Promise<Result<string>> => {
+    return ipcRenderer.invoke('generateDoc', loan)
   }
 }
 

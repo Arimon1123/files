@@ -70,8 +70,15 @@ export function LoanForm() {
     } as Loan
     console.log(borrower.id)
     const result = await window.api.saveLoan(loan)
-    if (result.result === 'success') setOpenSnackbar(true)
-    else console.error(result.error)
+    if (result.result === 'success') {
+      setOpenSnackbar(true)
+      const result = await window.api.generateDoc(loan)
+      if (result.result === 'success') {
+        alert('Document generated')
+      } else {
+        console.error(result.message)
+      }
+    } else console.error(result.error)
   }
   return (
     <>

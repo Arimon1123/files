@@ -170,16 +170,9 @@ const loanRepository = dataSource.getRepository(LoanEntity)
 
 export const saveLoan = async (loan: LoanEntity) => {
   try {
-    const newLoan = new LoanEntity()
-    newLoan.borrower =
-      (await personRepository.findOne({ where: { id: loan.borrower.id } })) ?? ({} as PersonEntity)
-    newLoan.loaner =
-      (await personRepository.findOne({ where: { id: loan.loaner.id } })) ?? ({} as PersonEntity)
-    newLoan.files = loan.files
-    newLoan.number = loan.number
-    newLoan.date = new Date()
-    console.table(newLoan)
-    await loanRepository.save(newLoan)
+    loan.date = new Date()
+    console.table(loan)
+    await loanRepository.save(loan)
     return { result: 'success', message: 'loan saved' } as Result<string>
   } catch (e) {
     console.error(e)

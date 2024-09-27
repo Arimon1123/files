@@ -7,6 +7,7 @@ import { dataSource, filterFiles, filterLoans, filterPersons, findFiles, findLoa
 import { FileEntity } from './entities/file.entity'
 import { PersonEntity } from './entities/person.entity'
 import { LoanEntity } from './entities/loan.entity'
+import { generateDocument } from './carbone'
 
 function createWindow(): void {
   // Create the browser window.
@@ -109,6 +110,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('updateLoan', async (_event, loan: LoanEntity) => {
     return await updateLoan(loan)
+  })
+
+  ipcMain.handle('generateDoc', async (_event, loan: LoanEntity) => {
+    return generateDocument(loan)
   })
 
   app.on('browser-window-created', (_, window) => {

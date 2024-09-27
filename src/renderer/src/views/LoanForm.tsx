@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FileForm } from './FileForm'
 import { PersonForm } from './PersonForm'
-import { CustomButton } from './Button'
+import { CustomButton } from '../components/Button'
 import { File, Loan, Person } from '@renderer/types/types'
 import { FileTable } from './FileList'
 import { Box, Snackbar } from '@mui/material'

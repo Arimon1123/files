@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { type File } from '@renderer/types/types'
+import { useEffect } from 'react'
 
 export function Home() {
   useEffect(() => {

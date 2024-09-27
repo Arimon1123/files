@@ -6,10 +6,10 @@ import {
   SelectChangeEvent,
   TextField
 } from '@mui/material'
-import { CustomButton } from './Button'
+import { CustomButton } from '../components/Button'
 import { ChangeEvent, FormEvent, ReactNode, useState } from 'react'
 import { Person, Result } from '@renderer/types/types'
-import { AreaSelect } from './AreaSelect'
+import { AreaSelect } from '../components/AreaSelect'
 
 interface PersonProps {
   addPersonHandler: (person: Person) => void

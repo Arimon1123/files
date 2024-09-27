@@ -12,6 +12,8 @@
     "borrower",
     "loaner",
     "sqlite",
+    "styled",
+    "transitions",
     "typeorm"
   ]
 }

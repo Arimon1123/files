@@ -1,65 +1,29 @@
-import { useState } from 'react'
-import { FileForm } from './FileForm'
-import { PersonForm } from './PersonForm'
-import { CustomButton } from '../components/Button'
+import { SyntheticEvent, useState } from 'react'
 import { File, Loan, Person } from '@renderer/types/types'
+import { Box, Snackbar, Typography } from '@mui/material'
+import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
+import useForm from '@renderer/hooks/useForm'
+import { FileForm } from '@renderer/views/FileForm'
+import { PersonForm } from '@renderer/views/PersonForm'
+import { Accordion, AccordionDetails, AccordionSummary } from '@renderer/components/CustomAccordion'
 import { FileTable } from './FileList'
-import { Box, Snackbar } from '@mui/material'
+import { CustomButton } from '@renderer/components/Button'
 
 export function LoanForm() {
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
-  const [isAddingFile, setIsAddingFile] = useState<boolean>(false)
-  const [isAddingBorrower, setIsAddingBorrower] = useState<boolean>(false)
-  const [isAddingLoaner, setIsAddingLoaner] = useState<boolean>(false)
-  const [files, setFiles] = useState<File[]>([])
-  const [borrower, setBorrower] = useState<Person>({} as Person)
-  const [loaner, setLoaner] = useState<Person>({} as Person)
-  const onAddFileHandler = (file: File) => {
-    isAddingBorrower ? setIsAddingBorrower(false) : null
-    const isInFiles = files.find((f) => f.fileNumber === file.fileNumber)
-    if (!isInFiles) {
-      setFiles((prevFiles) => {
-        console.log(prevFiles)
-        return [...prevFiles, file]
-      })
-      setIsAddingFile(false)
-    } else {
-      console.log('File already added')
-    }
-  }
-  const onSetBorrowerHandler = (person: Person) => {
-    isAddingFile ? setIsAddingFile(false) : null
-    setBorrower(person)
-    setIsAddingBorrower(false)
-  }
-  const onSetLoanerHandler = (person: Person) => {
-    isAddingFile ? setIsAddingFile(false) : null
-    setLoaner(person)
-    setIsAddingLoaner(false)
-  }
-  const handleClose = () => {
-    setOpenSnackbar(false)
-  }
+  const { form: borrower, onSetHandler: onSetBorrowerHandler } = useForm<Person>('Borrower', false)
+  const [pdf, setPdf] = useState<Buffer | null>(null)
+  const {
+    form: loaner,
+
+    onSetHandler: onSetLoanerHandler
+  } = useForm<Person>('Loaner', false)
+  const {
+    form: files,
+    onAddHandler: onAddFileHandler,
+    onDeleteHandler: onDeleteHandler
+  } = useForm<File>('File', true, 'id')
   const date = new Date()
-  const onDeleteHandler = (file: File) => {
-    const newFiles = files.filter((item) => item.fileNumber !== file.fileNumber)
-    console.log(newFiles)
-    setFiles(newFiles)
-  }
-
-  const openFileForm = () => {
-    setIsAddingBorrower(false)
-    setIsAddingFile(true)
-  }
-  const openBorrowerForm = () => {
-    setIsAddingFile(false)
-    setIsAddingBorrower(true)
-  }
-  const openLoanerForm = () => {
-    setIsAddingFile(false)
-    setIsAddingLoaner(true)
-  }
-
   const handleClick = async () => {
     const loan = {
       number: 145,
@@ -68,54 +32,81 @@ export function LoanForm() {
       files: files,
       loaner: loaner
     } as Loan
-    console.log(borrower.id)
     const result = await window.api.saveLoan(loan)
     if (result.result === 'success') {
       setOpenSnackbar(true)
-      const result = await window.api.generateDoc(loan)
-      if (result.result === 'success') {
+      const resultGenerateDoc = await window.api.generateDoc(loan)
+      if (resultGenerateDoc.result === 'success') {
         alert('Document generated')
+        setPdf(resultGenerateDoc.data ?? null)
       } else {
         console.error(result.message)
       }
     } else console.error(result.error)
   }
+  const [expanded, setExpanded] = useState<string | false>('panel1')
+
+  const handleChange = (panel: string) => (_event: SyntheticEvent, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : false)
+  }
+
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <h1>Nuevo préstamo</h1>
-        <span>{date.toLocaleDateString()}</span>
-        {borrower.name && (
-          <span>{`Nombre: ${borrower.name} Dirección: ${borrower.area} Posición: ${borrower.position}`}</span>
-        )}
+        <Typography component="h4" variant="h4">
+          Nuevo préstamo
+        </Typography>
+        <Typography>{date.toLocaleDateString()}</Typography>
       </Box>
-      <Box
-        sx={{ display: 'flex', flexDirection: 'row', width: '50%', marginTop: 2, marginBottom: 2 }}
-      >
-        <CustomButton onClick={openBorrowerForm} sx={{ marginRight: 2 }}>
-          Persona
-        </CustomButton>
-        <CustomButton onClick={openFileForm} sx={{ marginRight: 2 }}>
-          Agregar archivo
-        </CustomButton>
-        <CustomButton onClick={openLoanerForm}>Persona2</CustomButton>
-      </Box>
-      <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-        {files.length > 0 && (
-          <FileTable files={files} onDeleteHandler={onDeleteHandler}></FileTable>
-        )}
-      </Box>
-      <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-        {isAddingFile && <FileForm addFileHandler={onAddFileHandler}></FileForm>}
-        {isAddingBorrower && <PersonForm addPersonHandler={onSetBorrowerHandler}></PersonForm>}
-        {isAddingLoaner && <PersonForm addPersonHandler={onSetLoanerHandler}></PersonForm>}
-      </Box>
-      <CustomButton onClick={handleClick}>Guardar préstamo</CustomButton>
+      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreRoundedIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          Seleccionar prestatario
+        </AccordionSummary>
+        <AccordionDetails>
+          <PersonForm addPersonHandler={onSetBorrowerHandler} />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreRoundedIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          {' '}
+          Agregar Archivos
+        </AccordionSummary>
+        <AccordionDetails>
+          <FileForm addFileHandler={onAddFileHandler} />
+          <FileTable files={files} onDeleteHandler={onDeleteHandler} />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreRoundedIcon />}
+          aria-controls="panel2-content"
+          id="panel2-header"
+        >
+          Seleccionar Prestador
+        </AccordionSummary>
+        <AccordionDetails>
+          <PersonForm addPersonHandler={onSetLoanerHandler} />
+        </AccordionDetails>
+      </Accordion>
+      <CustomButton onClick={handleClick}>Guardar</CustomButton>
+      {pdf && (
+        <iframe src={URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }))}>
+          Descargar
+        </iframe>
+      )}
       <Snackbar
         open={openSnackbar}
         message={'Guardado'}
         autoHideDuration={2500}
-        onClose={handleClose}
+        onClose={() => setOpenSnackbar(false)}
       ></Snackbar>
     </>
   )

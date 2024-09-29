@@ -20,7 +20,7 @@ declare global {
       saveLoan: (loan: LoanEntity) => Promise<Result<string>>
       filterLoans: (filter: string) => Promise<Result<LoanEntity[]>>
       searchLoan: (number: number) => Promise<Result<LoanEntity[]>>
-      generateDoc: (loan: LoanEntity) => Promise<Result<string>>
+      generateDoc: (loan: LoanEntity) => Promise<Result<Buffer>>
     }
   }
 }

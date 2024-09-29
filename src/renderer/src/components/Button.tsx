@@ -1,5 +1,4 @@
 import { Button, styled } from '@mui/material'
-
 export const CustomButton = styled(Button)(({ theme }) => ({
   boxShadow: 'none',
   textTransform: 'none',
@@ -7,14 +6,14 @@ export const CustomButton = styled(Button)(({ theme }) => ({
   padding: theme.spacing(0.5),
   border: '1px solid',
   lineHeight: 1.5,
-  backgroundColor: '#0063ca',
-  borderColor: '#0063ca',
-  borderRadius: 10,
+  backgroundColor: '#0c355d',
+  borderColor: '#305d96',
+  borderRadius: 5,
   fontFamily: 'Arial',
   color: 'white',
   '&:hover': {
-    backgroundColor: '#0069d9',
-    borderColor: '#0062cc',
+    backgroundColor: '#145593',
+    borderColor: '#305d96',
     boxShadow: 'none'
   },
   '&:active': {

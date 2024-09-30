@@ -8,11 +8,12 @@ import { CustomLabel } from '@renderer/components/CustomLabel'
 
 interface FileFormProps {
   addFileHandler: (file: File) => void
+  callback?: () => void
 }
 
 export const FileForm = (props: FileFormProps): JSX.Element => {
   const [options, setOptions] = useState<File[]>([])
-  const [file, setFile] = useState<File>({ fileNumber: '' } as File)
+  const [file, setFile] = useState<File>({ fileNumber: '', area: '-1' } as File)
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
@@ -23,6 +24,7 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
     const savedFile = result.data
     if (savedFile) {
       props.addFileHandler(savedFile)
+      props.callback && props.callback()
     } else {
       console.error('Saved file is undefined')
     }
@@ -56,9 +58,6 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
     <Box sx={{ flexGrow: 1 }}>
       <form onSubmit={handleSubmit}>
         <Grid container columnSpacing={1} rowSpacing={3}>
-          <Grid size={12}>
-            <h2>Registrar archivo</h2>
-          </Grid>
           <Grid size={6}>
             <FormControl fullWidth>
               <Autocomplete
@@ -78,6 +77,7 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
                       inputProps={params.inputProps}
                       ref={params.InputProps.ref}
                       name="fileNumber"
+                      placeholder="Número de trámite"
                     />
                   </FormControl>
                 )}
@@ -114,6 +114,7 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
               <AreaSelect
                 id="area"
                 labelId="label-area"
+                placeholder="Dirección"
                 variant="outlined"
                 label="Dirección"
                 name="area"
@@ -130,12 +131,13 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
               <BootstrapInput
                 id="institution"
                 name="institution"
+                placeholder="Institución"
                 value={file.institution ? file.institution : ''}
                 onChange={handleChange}
               />
             </FormControl>
           </Grid>
-          <Grid size={4}>
+          <Grid size={12}>
             <FormControl fullWidth variant="standard">
               <CustomLabel htmlFor="medium" shrink>
                 Medio
@@ -143,17 +145,21 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
               <BootstrapInput
                 id="medium"
                 name="medium"
+                placeholder="Medio"
                 value={file.medium ? file.medium : ''}
                 onChange={handleChange}
               />
             </FormControl>
           </Grid>
-          <Grid size={4}>
+          <Grid size={8}>
             <FormControl fullWidth variant="standard">
-              <CustomLabel htmlFor="volume">Volumen</CustomLabel>
+              <CustomLabel htmlFor="volume" shrink>
+                Volumen
+              </CustomLabel>
               <BootstrapInput
                 id="volume"
                 name="volume"
+                placeholder="Volumen"
                 value={file.volume ? file.volume : ''}
                 onChange={handleChange}
               />
@@ -161,10 +167,13 @@ export const FileForm = (props: FileFormProps): JSX.Element => {
           </Grid>
           <Grid size={4}>
             <FormControl fullWidth variant="standard">
-              <CustomLabel htmlFor="year">Fecha</CustomLabel>
+              <CustomLabel htmlFor="year" shrink>
+                Fecha
+              </CustomLabel>
               <BootstrapInput
                 id="year"
                 name="year"
+                placeholder="Fecha"
                 value={file.year ? file.year : ''}
                 onChange={handleChange}
               />

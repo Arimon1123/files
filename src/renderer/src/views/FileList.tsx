@@ -1,15 +1,7 @@
-import {
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow
-} from '@mui/material'
+import { IconButton, Paper, Table, TableBody, TableContainer, TableHead } from '@mui/material'
 import { File } from '@renderer/types/types'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { StyledTableCell, StyledTableRow } from '@renderer/components/CustomTable'
 
 interface FileTableProps {
   files: File[]
@@ -22,30 +14,30 @@ export function FileTable(props: FileTableProps) {
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nro de Tramite</TableCell>
-              <TableCell>Descripción</TableCell>
-              <TableCell>Dirección</TableCell>
-              <TableCell>Institución</TableCell>
-              <TableCell>Medio</TableCell>
-              <TableCell>Volumen</TableCell>
-              <TableCell>Año</TableCell>
-              <TableCell>Acciones</TableCell>
-            </TableRow>
+            <StyledTableRow>
+              <StyledTableCell>ID</StyledTableCell>
+              <StyledTableCell>Nro de Tramite</StyledTableCell>
+              <StyledTableCell>Descripción</StyledTableCell>
+              <StyledTableCell>Dirección</StyledTableCell>
+              <StyledTableCell>Institución</StyledTableCell>
+              <StyledTableCell>Medio</StyledTableCell>
+              <StyledTableCell>Volumen</StyledTableCell>
+              <StyledTableCell>Año</StyledTableCell>
+              <StyledTableCell>Acciones</StyledTableCell>
+            </StyledTableRow>
           </TableHead>
           <TableBody>
             {props.files.map((file: File) => (
-              <TableRow key={file.id}>
-                <TableCell>{file.id}</TableCell>
-                <TableCell>{file.fileNumber}</TableCell>
-                <TableCell>{file.description}</TableCell>
-                <TableCell>{file.area}</TableCell>
-                <TableCell>{file.institution}</TableCell>
-                <TableCell>{file.medium}</TableCell>
-                <TableCell>{file.volume}</TableCell>
-                <TableCell>{file.year}</TableCell>
-                <TableCell>
+              <StyledTableRow key={file.id}>
+                <StyledTableCell>{file.id}</StyledTableCell>
+                <StyledTableCell>{file.fileNumber}</StyledTableCell>
+                <StyledTableCell>{file.description}</StyledTableCell>
+                <StyledTableCell>{file.area}</StyledTableCell>
+                <StyledTableCell>{file.institution}</StyledTableCell>
+                <StyledTableCell>{file.medium}</StyledTableCell>
+                <StyledTableCell>{file.volume}</StyledTableCell>
+                <StyledTableCell>{file.year}</StyledTableCell>
+                <StyledTableCell>
                   <IconButton
                     onClick={() => {
                       props.onDeleteHandler(file)
@@ -53,8 +45,8 @@ export function FileTable(props: FileTableProps) {
                   >
                     <DeleteIcon sx={{ color: 'red' }}></DeleteIcon>
                   </IconButton>
-                </TableCell>
-              </TableRow>
+                </StyledTableCell>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>

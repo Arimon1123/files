@@ -13,8 +13,13 @@ export function AreaSelect(props: SelectProps) {
       <Select {...props} input={<BootstrapInput></BootstrapInput>} sx={{ margin: 0 }}>
         {areas.map((area) => {
           return (
-            <MenuItem value={area} key={area} style={{ width: '100%' }}>
-              {area}
+            <MenuItem
+              value={area.value}
+              key={area.value}
+              disabled={area.disabled}
+              style={{ width: '100%' }}
+            >
+              {area.label}
             </MenuItem>
           )
         })}

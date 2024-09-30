@@ -1,6 +1,6 @@
 import { SyntheticEvent, useState } from 'react'
 import { File, Loan, Person } from '@renderer/types/types'
-import { Box, Snackbar, Typography } from '@mui/material'
+import { Box, Dialog, DialogProps, DialogTitle, Snackbar, Typography } from '@mui/material'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import useForm from '@renderer/hooks/useForm'
 import { FileForm } from '@renderer/views/FileForm'
@@ -8,11 +8,16 @@ import { PersonForm } from '@renderer/views/PersonForm'
 import { Accordion, AccordionDetails, AccordionSummary } from '@renderer/components/CustomAccordion'
 import { FileTable } from './FileList'
 import { CustomButton } from '@renderer/components/Button'
+import PdfViewer from './PdfViewer'
+import { useModal } from 'mui-modal-provider'
+import { FileFormDialog } from '@renderer/components/Dialog'
+import { Add } from '@mui/icons-material'
 
 export function LoanForm() {
+  const { showModal, hideModal } = useModal()
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false)
   const { form: borrower, onSetHandler: onSetBorrowerHandler } = useForm<Person>('Borrower', false)
-  const [pdf, setPdf] = useState<Buffer | null>(null)
+  const [pdf, setPdf] = useState<Blob | null>(null)
   const {
     form: loaner,
 
@@ -38,18 +43,22 @@ export function LoanForm() {
       const resultGenerateDoc = await window.api.generateDoc(loan)
       if (resultGenerateDoc.result === 'success') {
         alert('Document generated')
-        setPdf(resultGenerateDoc.data ?? null)
+        console.log(resultGenerateDoc.data)
+        setPdf(new Blob([resultGenerateDoc.data as Buffer], { type: 'application/pdf' }))
       } else {
         console.error(result.message)
       }
     } else console.error(result.error)
   }
-  const [expanded, setExpanded] = useState<string | false>('panel1')
-
-  const handleChange = (panel: string) => (_event: SyntheticEvent, newExpanded: boolean) => {
-    setExpanded(newExpanded ? panel : false)
+  const onShowModal = () => {
+    const modal = showModal(FileFormDialog, {
+      title: 'Agregar archivo',
+      addHandler: onAddFileHandler,
+      callback: () => {
+        modal.hide()
+      }
+    })
   }
-
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -58,50 +67,13 @@ export function LoanForm() {
         </Typography>
         <Typography>{date.toLocaleDateString()}</Typography>
       </Box>
-      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreRoundedIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          Seleccionar prestatario
-        </AccordionSummary>
-        <AccordionDetails>
-          <PersonForm addPersonHandler={onSetBorrowerHandler} />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreRoundedIcon />}
-          aria-controls="panel2-content"
-          id="panel2-header"
-        >
-          {' '}
-          Agregar Archivos
-        </AccordionSummary>
-        <AccordionDetails>
-          <FileForm addFileHandler={onAddFileHandler} />
-          <FileTable files={files} onDeleteHandler={onDeleteHandler} />
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreRoundedIcon />}
-          aria-controls="panel2-content"
-          id="panel2-header"
-        >
-          Seleccionar Prestador
-        </AccordionSummary>
-        <AccordionDetails>
-          <PersonForm addPersonHandler={onSetLoanerHandler} />
-        </AccordionDetails>
-      </Accordion>
-      <CustomButton onClick={handleClick}>Guardar</CustomButton>
-      {pdf && (
-        <iframe src={URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }))}>
-          Descargar
-        </iframe>
-      )}
+
+      <Box sx={{ marginY: 1 }}>
+        <CustomButton sx={{ px: 1 }} startIcon={<Add />} onClick={onShowModal}>
+          Agregar archivos
+        </CustomButton>
+        <FileTable files={files} onDeleteHandler={onDeleteHandler} />
+      </Box>
       <Snackbar
         open={openSnackbar}
         message={'Guardado'}

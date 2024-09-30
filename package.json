@@ -31,6 +31,8 @@
     "@swc/core": "^1.7.26",
     "carbone": "^3.5.6",
     "electron-rebuild": "^3.2.9",
+    "libreoffice-convert": "^1.6.0",
+    "mui-modal-provider": "^2.4.4",
     "react-router-dom": "^6.26.2",
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20"
